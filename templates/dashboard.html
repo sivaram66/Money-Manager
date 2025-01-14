@@ -1,0 +1,77 @@
+{% load static %}  <!-- Load static files at the very top -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Manager Dashboard</title>
+    <!-- Use Django's static file handling for external CSS -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}?v=12">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Money Manager</h1>
+                <div class="user-info">
+                    <div class="user-avatar">{{ user.fullname|slice:":2" }}</div>
+                    <span>{{ user.fullname }}</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <!-- Use Django's URL tag for linking to views -->
+                    <li><a href="/accounts/dashboard"><span class="icon">📊</span> Dashboard</a></li>
+                    <li><a href="/accounts/add_expense"><span class="icon">💰</span> Add Expense</a></li>
+                    <li><a href="/accounts/view_expenses"><span class="icon">📋</span> View Expenses</a></li>
+                    <li><a href="/accounts/manage_budget"><span class="icon">📅</span> Budget Overview</a></li>
+                    <li><a href="/accounts/reports"><span class="icon">📈</span> Reports</a></li>
+                    <li><a href="/accounts/settings" class="active"><span class="icon">⚙️</span> Settings</a></li>
+                    <li><a href="/accounts/logout"><span class="icon">↩️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <header class="main-header">
+                <h2 class="main-title">Dashboard - {{ current_month }} {{ current_year }}</h2>
+            </header>
+            <section class="quick-actions">
+                <!-- <div class="card">
+                    <div class="card-header">Total Balance</div>
+                    <div class="card-content">₹{{ total_balance }}</div>
+                </div> -->
+                <div class="card">
+                    <div class="card-header">Income ({{ current_month }} {{ current_year }})</div>
+                    <div class="card-content">₹{{ monthly_income }}</div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Expenses ({{ current_month }} {{ current_year }})</div>
+                    <div class="card-content">₹{{ monthly_expenses }}</div>
+                </div>
+                <div class="card">
+                    <div class="card-header">Savings ({{ current_month }} {{ current_year }})</div>
+                    <div class="card-content">₹{{ monthly_savings }}</div>
+                </div>
+            </section>
+            <section class="card">
+                <div class="card-header">Recent Expenses ({{ current_month }} {{ current_year }})</div>
+                <ul class="expense-list">
+                    {% for expense in recent_expenses %}
+                    <li class="expense-item">
+                        <div class="expense-info">
+                            <strong>{{ expense.name }}</strong>
+                            <span>{{ expense.category }}</span>
+                            <small>{{ expense.date }}</small>
+                        </div>
+                        <span class="expense-amount">₹{{ expense.amount }}</span>
+                    </li>
+                    {% empty %}
+                    <li>No expenses found for this month.</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

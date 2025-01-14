@@ -1,0 +1,56 @@
+{% load static %} 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Validation</title>
+    <link rel="stylesheet" href="{% static 'validate_otp.css' %}">
+    <script>
+        function moveFocus(current, nextFieldID, prevFieldID, event) {
+            if (event.key === "Backspace" && current.value.length === 0) {
+                // Move focus to the previous field if backspace is pressed and current field is empty
+                if (prevFieldID) {
+                    document.getElementById(prevFieldID).focus();
+                }
+            } else if (current.value.length >= current.maxLength) {
+                // Move focus to the next field if the current field is filled
+                if (nextFieldID) {
+                    document.getElementById(nextFieldID).focus();
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="otp-card">
+            <h1>Enter Verification Code</h1>
+            <p>We've sent a code to your email</p>
+            <form method="post" action="{% url 'validate_otp' %}">
+                {% csrf_token %}
+                <div class="otp-inputs">
+                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" name="otp1" id="otp1" required oninput="moveFocus(this, 'otp2', null, event)" onkeydown="moveFocus(this, 'otp2', null, event)">
+                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" name="otp2" id="otp2" required oninput="moveFocus(this, 'otp3', 'otp1', event)" onkeydown="moveFocus(this, 'otp3', 'otp1', event)">
+                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" name="otp3" id="otp3" required oninput="moveFocus(this, 'otp4', 'otp2', event)" onkeydown="moveFocus(this, 'otp4', 'otp2', event)">
+                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" name="otp4" id="otp4" required oninput="moveFocus(this, 'otp5', 'otp3', event)" onkeydown="moveFocus(this, 'otp5', 'otp3', event)">
+                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" name="otp5" id="otp5" required oninput="moveFocus(this, 'otp6', 'otp4', event)" onkeydown="moveFocus(this, 'otp6', 'otp4', event)">
+                    <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" name="otp6" id="otp6" required oninput="moveFocus(this, null, 'otp5', event)" onkeydown="moveFocus(this, null, 'otp5', event)">
+                </div>
+                <button type="submit" class="verify-btn">Verify Code</button>
+            </form>
+            <div class="resend">
+                Didn't receive the code? <a href="{% url 'resend_otp' %}">Resend</a>
+            </div>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

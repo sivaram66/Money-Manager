@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget - Money Manager</title>
+    <link rel="stylesheet" href="{% static 'styles1.css' %}?v=12">
+</head>
+<body>
+    <div class="dashboard">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Money Manager</h1>
+                <div class="user-info">
+                    <div class="user-avatar">{{ user.fullname|slice:":2" }}</div>
+                    <span>{{ user.fullname }}</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/accounts/dashboard"><span class="icon">📊</span> Dashboard</a></li>
+                    <li><a href="/accounts/add_expense"><span class="icon">💰</span> Add Expense</a></li>
+                    <li><a href="/accounts/view_expenses"><span class="icon">📋</span> View Expenses</a></li>
+                     <li><a href="/accounts/manage_budget"><span class="icon">📅</span> Budget</a></li>
+                    <li><a href="#"><span class="icon">📈</span> Reports</a></li>
+                    <li><a href="/accounts/settings" class="active"><span class="icon">⚙️</span> Settings</a></li>
+                    <li><a href="/accounts/logout"><span class="icon">↩️</span> Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main>
+            <header class="main-header">
+                <h2 class="main-title">Budget Management</h2>
+                {% csrf_token %}
+            <!-- <div class="month-input-container">
+                    <label for="month" class="month-label">Month & Year</label>
+               <div class="month-input-wrapper">
+                    <input type="month" id="month" name="month_year" value="{{ month|date:'Y-m' }}" required class="month-input">
+                    <span class="month-icon">📅</span>
+                </div>
+            </div> -->
+
+            </header>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="{{ message.tags }}">{{ message }}</div>
+                     {% endfor %}
+                </div>
+             {% endif %}
+
+<!-- Form to Select Month and Year -->
+<form method="GET" action="{% url 'manage_budget' %}">
+    <div class="month-input-container">
+        <label for="month" class="month-label">Month & Year</label>
+        <div class="month-input-wrapper">
+            <input type="month" id="month" name="month_year" value="{{ month }}" required class="month-input" onchange="this.form.submit()">
+            <span class="month-icon">📅</span>
+        </div>
+    </div>
+</form>
+
+<!-- Form to Add Income for Selected Month -->
+<form method="POST" action="{% url 'manage_budget' %}">
+    {% csrf_token %}
+    
+    <!-- Hidden Inputs to Pass Selected Month and Year -->
+    <input type="hidden" name="month_year" value="{{ month }}">
+
+    <div class="summary-cards">
+        <!-- Income Card -->
+        <div class="summary-card income">
+            <h3>Total Income ({{ current_month }} {{ current_year }})</h3>
+            <div class="amount">${{ total_income|default:0 }}</div>
+            
+            <!-- Income Input -->
+            <input type="number" id="income" name="income" placeholder="Enter Income" min="0" required class="input-field">
+            
+            <!-- Submit Button -->
+            <button type="submit" class="btn add-btn">Add Income</button>
+        </div>
+        
+        <!-- Expenses Card -->
+        <div class="summary-card expenses">
+            <h3>Total Expenses ({{ current_month }} {{ current_year }})</h3>
+            <div class="amount">${{ total_expenses|default:0 }}</div>
+        </div>
+        
+        <!-- Savings Card -->
+        <div class="summary-card savings">
+            <h3>Total Savings ({{ current_month }} {{ current_year }})</h3>
+            <div class="amount">${{ total_savings|default:0 }}</div>
+        </div>
+    </div>
+</form>
+
+
+<!-- 
+            <div class="budget-sections">
+                <section class="budget-section">
+                    <h3>Monthly Budget Allocation</h3>
+                    <form class="budget-form">
+                        <div class="category-budgets">
+                            <div class="budget-category">
+                                <label>Food & Dining</label>
+                                <input type="number" value="500" min="0">
+                                <div class="usage-bar">
+                                    <div class="used" style="width: 80%"></div>
+                                </div>
+                                <div class="budget-stats">
+                                    <span>Used: $400</span>
+                                    <span>Left: $100</span>
+                                </div>
+                            </div>
+                            <div class="budget-category">
+                                <label>Transportation</label>
+                                <input type="number" value="300" min="0">
+                                <div class="usage-bar">
+                                    <div class="used" style="width: 60%"></div>
+                                </div>
+                                <div class="budget-stats">
+                                    <span>Used: $180</span>
+                                    <span>Left: $120</span>
+                                </div>
+                            </div>
+                            <div class="budget-category">
+                                <label>Utilities</label>
+                                <input type="number" value="400" min="0">
+                                <div class="usage-bar">
+                                    <div class="used" style="width: 75%"></div>
+                                </div>
+                                <div class="budget-stats">
+                                    <span>Used: $300</span>
+                                    <span>Left: $100</span>
+                                </div>
+                            </div>
+                            <div class="budget-category">
+                                <label>Entertainment</label>
+                                <input type="number" value="200" min="0">
+                                <div class="usage-bar">
+                                    <div class="used" style="width: 90%"></div>
+                                </div>
+                                <div class="budget-stats">
+                                    <span>Used: $180</span>
+                                    <span>Left: $20</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn update-budget">Update Budget</button>
+                    </form>
+                </section>
+            </div> -->
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyManager - Your Personal Finance Tracker</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="landing-page">
+        <nav class="navbar">
+            <a href="/" class="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/>
+                    <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/>
+                    <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/>
+                </svg>
+                MoneyManager
+            </a>
+            <div class="nav-links">
+                <!-- Static links for login and register (no Django URL handling) -->
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn-primary">Dashboard</a>
+                <a href="{% url 'logout' %}" class="btn-primary">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="btn-primary">Get Started</a>
+                {%endif%}
+            </div>
+        </nav>
+        
+        <div class="hero">
+            <h1>Smart Money Management<br>Made Simple</h1>
+            <p>Take control of your finances with powerful tools for budgeting, expense tracking, and financial planning.</p>
+            {% if not user.is_authenticated %}
+
+            <a href="accounts/register" class="btn-large">Start Free Today</a>
+            {%endif%}
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>Budget Tracking</h3>
+                <p>Set and monitor budgets for different categories to stay on top of your spending habits and achieve your financial goals.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Expense Analytics</h3>
+                <p>Visualize your spending patterns with intuitive charts and detailed reports to make informed financial decisions.</p>
+            </div>
+            <div class="feature-card">
+                <h3>Secure & Private</h3>
+                <p>Your financial data is encrypted and protected with bank-level security. Your privacy is our top priority.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

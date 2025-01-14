@@ -1,0 +1,593 @@
+/* Reset and base styles - Used globally across all pages */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Landing page styles - Applied to the landing page */
+.landing-page {
+    min-height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.landing-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.9));
+}
+
+/* Navbar - Navigation bar styles */
+.navbar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    z-index: 1;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #60A5FA;
+}
+
+.nav-links .btn-primary {
+    background: #3B82F6;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+}
+
+.nav-links .btn-primary:hover {
+    background: #2563EB;
+    color: white;
+}
+
+/* Hero section - Headline and main call-to-action */
+.hero {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #E5E7EB;
+    margin-bottom: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-large {
+    display: inline-block;
+    background: #3B82F6;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-size: 1.125rem;
+    transition: background-color 0.3s;
+}
+
+.btn-large:hover {
+    background: #2563EB;
+}
+
+/* Features section - Describes key features of the service */
+.features {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 4rem auto 0;
+    padding: 0 2rem;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 1rem;
+    color: white;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card p {
+    color: #E5E7EB;
+    line-height: 1.6;
+}
+
+/* Auth pages styles - Applies to all login or registration pages */
+.auth-container {
+    min-height: 100vh;
+    background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.8), rgba(17, 24, 39, 0.9));
+    z-index: 0;
+}
+
+/* Auth card - Card containing the form for login/registration */
+.auth-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem;
+    border-radius: 1rem;
+    color: white;
+    width: 100%;
+    max-width: 500px;
+    z-index: 1;
+}
+
+.auth-card h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #E5E7EB;
+}
+
+/* Form group - Styles for form elements such as input fields */
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.75rem;
+    color: white;
+    font-size: 1.1rem;
+}
+
+.regform label{
+    color: white;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1.1rem;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Button styles - Applies to buttons in auth pages */
+.btn {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: #3B82F6;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background: #2563EB;
+}
+
+/* Auth link - For redirecting between login/registration */
+.auth-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.auth-link a {
+    color: #3B82F6;
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Message popup - Used for displaying notifications or alerts */
+.message-popup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  max-width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.message-item {
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.message-item:last-child {
+  border-bottom: none;
+}
+
+.message-item h3 {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+/* For Add expenses page */
+
+/* General reset and body styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Apply background image and gradient overlay */
+body {
+    background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #fff;
+    line-height: 1.6;
+    position: relative;
+}
+
+/* Dark gradient overlay */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.6), rgba(17, 24, 39, 0.7));
+    z-index: -1;
+}
+
+/* Transparent tables for all tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.3); /* Slight transparency */
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    backdrop-filter: blur(10px); /* Blur effect for the background behind tables */
+}
+
+/* Table header and cells */
+th, td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.6); /* Light border with transparency */
+}
+
+/* Header background color and text color */
+th {
+    background-color: rgba(52, 152, 219, 0.5); /* Transparent blue for header */
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Alternating row colors for transparency */
+tr:nth-child(even) {
+    background-color: rgba(236, 240, 241, 0.5); /* Slight transparency for even rows */
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.3); /* Slight transparency for odd rows */
+}
+
+/* Table hover effect */
+tr:hover {
+    background-color: rgba(52, 152, 219, 0.3); /* Light hover effect with transparency */
+}
+
+/* Specific table styling */
+#add-expenses, 
+#budget-table, 
+#view-expenses {
+    backdrop-filter: blur(8px); /* Custom blur effect for these specific tables */
+}
+
+/* Sidebar and main content */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.dashboard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.7), rgba(17, 24, 39, 0.8));
+    z-index: -1;
+}
+
+.sidebar {
+    width: 250px;
+    background-color: rgba(44, 62, 80, 0.9);
+    color: #ecf0f1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Sidebar styles */
+.sidebar-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.sidebar-header h1 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+/* User info section in sidebar */
+.user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3498db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Sidebar navigation */
+.sidebar-nav {
+    flex-grow: 1;
+}
+
+.sidebar-nav ul {
+    list-style-type: none;
+}
+
+.sidebar-nav li {
+    margin-bottom: 15px;
+}
+
+.sidebar-nav a {
+    color: #ecf0f1;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-nav a:hover {
+    color: #3498db;
+}
+
+.sidebar-nav .icon {
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+/* Main header */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.main-title {
+    font-size: 2rem;
+    color: #fff;
+}
+
+/* Quick action cards */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.card-content {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+}
+.add-expense-main {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 50px;
+}
+
+.settings-card {
+    max-width: 550px;
+}
+.settings-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Button styles */
+.btn {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background-color: #2980b9;
+}
+
+/* Expense list styles */
+.expense-list {
+    list-style-type: none;
+}
+
+.expense-item {
+    color: #fff;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.expense-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.expense-amount {
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .expense-section {
+        grid-template-columns: 1fr;
+    }
+    .settings-card {
+        min-width: 550px;
+    }
+}
+@media (min-width: 1080px) {
+    .settings-card {
+        min-width: 550px;
+    }
+    .add-expense-card {
+        min-width: 900px;
+        line-height: 2;
+    }
+}
