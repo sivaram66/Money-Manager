@@ -1,0 +1,136 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #fff;
+    background-image: url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(17, 24, 39, 0.6), rgba(17, 24, 39, 0.7));
+    z-index: -1;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header div {
+    margin-top: 10px;
+}
+
+header label {
+    margin-right: 10px;
+}
+
+/* Main content styles */
+main {
+    padding: 20px;
+}
+
+section {
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    margin-top: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Chart styles */
+#charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#charts canvas {
+    flex: 1 1 45%;
+    max-width: 45%;
+}
+
+/* Footer styles */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}
+
+footer button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+footer button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    main {
+        padding: 10px;
+    }
+
+    section {
+        padding: 10px;
+    }
+
+    footer {
+        padding: 10px;
+    }
+
+    #charts {
+        flex-direction: column;
+    }
+
+    #charts canvas {
+        max-width: 100%;
+    }
+}
