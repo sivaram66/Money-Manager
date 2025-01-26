@@ -81,14 +81,14 @@ WSGI_APPLICATION = 'MoneyManager.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': env('DATABASE_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST', default='localhost'),
-        'PORT': env('DATABASE_PORT', default='5432'),
-    }
+    # 'default': {
+    #     'ENGINE': env('DATABASE_ENGINE', default='django.db.backends.postgresql'),
+    #     'NAME': env('DATABASE_NAME'),
+    #     'USER': env('DATABASE_USER'),
+    #     'PASSWORD': env('DATABASE_PASSWORD'),
+    #     'HOST': env('DATABASE_HOST', default='localhost'),
+    #     'PORT': env('DATABASE_PORT', default='5432'),
+    # }
 }
 database_url =os.environ.get("DATABASE_URL")
 DATABASES["default"] = dj_database_url.parse("database_url")
