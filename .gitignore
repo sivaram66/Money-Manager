@@ -12,7 +12,7 @@ db.sqlite3
 venv/
 env/
 
-# Ignore static and media files
+Ignore static and media files
 staticfiles/
 media/
 
