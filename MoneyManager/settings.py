@@ -80,18 +80,23 @@ WSGI_APPLICATION = 'MoneyManager.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': env('DATABASE_ENGINE', default='django.db.backends.postgresql'),
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST', default='localhost'),
+#         'PORT': env('DATABASE_PORT', default='5432'),
+#     }
+# }
+
+database_url = os.environ.get("DATABASE_URL")
 DATABASES = {
-    'default': {
-        'ENGINE': env('DATABASE_ENGINE', default='django.db.backends.postgresql'),
-        'NAME': env('DATABASE_NAME'),
-        'USER': env('DATABASE_USER'),
-        'PASSWORD': env('DATABASE_PASSWORD'),
-        'HOST': env('DATABASE_HOST', default='localhost'),
-        'PORT': env('DATABASE_PORT', default='5432'),
-    }
+    'default': dj_database_url.parse(database_url)
 }
-database_url =os.environ.get("DATABASE_URL")
-DATABASES["default"] = dj_database_url.parse("database_url")
+# database_url =os.environ.get("DATABASE_URL")
+# DATABASES["default"] = dj_database_url.parse("database_url")
 
 
 # Password validation
@@ -143,9 +148,16 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
