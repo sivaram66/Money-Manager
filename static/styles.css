@@ -251,8 +251,8 @@
 /* Message popup - Used for displaying notifications or alerts */
 .message-popup {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: -20px;
+  right: 10px;
   max-width: 300px;
   background: white;
   border-radius: 10px;
