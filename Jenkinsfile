@@ -3,13 +3,13 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'sivaram66/money-manager'
-        DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Replace with your Docker Hub credentials in Jenkins
+        DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Name of the credentials ID
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/sivaram66/Money-Manager'  // Replace with your GitHub repo
+                git branch: 'main', url: 'https://github.com/sivaram66/Money-Manager'
             }
         }
 
@@ -25,8 +25,10 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    // Login to Docker Hub using Jenkins credentials
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    // Use Jenkins credentials to login to Docker Hub
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub-sivaram66', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                    }
                 }
             }
         }
