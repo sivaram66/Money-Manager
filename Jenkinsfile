@@ -48,7 +48,7 @@ pipeline {
       }
       steps {
         script {
-          sh "docker-compose build --no-cache"
+          sh "docker compose build --no-cache"
         }
       }
     }
@@ -83,7 +83,7 @@ pipeline {
           }
         }
         sh "docker compose down --rmi all --volumes"
-        sh "docker-compose up -d --force-recreate"
+        sh "docker compose up -d --force-recreate"
       }
     }
   }
