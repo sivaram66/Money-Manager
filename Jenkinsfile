@@ -74,6 +74,13 @@ pipeline {
       }
     }
     stage('Deploy Docker Containers') {
+      script {
+          withCredentials([file(credentialsId: 'env-file', variable: 'SECRET_ENV')]) {
+            sh '''
+                cp "$SECRET_ENV" .env
+              '''
+          }
+        }
       steps {
         sh "docker compose down --rmi all --volumes"
         sh "docker compose up -d"
