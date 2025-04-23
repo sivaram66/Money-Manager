@@ -1,5 +1,18 @@
 pipeline {
-    agent any
+  agent any
+
+  parameters {
+    booleanParam(
+      name: 'BUILD_IMAGES',
+      defaultValue: true,
+      description: 'Build Docker images?'
+    )
+    booleanParam(
+      name: 'PUSH_IMAGES',
+      defaultValue: true,
+      description: 'Push Docker images to Docker Hub?'
+    )
+  }
 
     environment {
         DOCKER_IMAGE_NAME = 'sivaram66/money-manager'
@@ -7,41 +20,64 @@ pipeline {
         DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Name of the credentials ID
     }
 
-    stages {
-        stage('Checkout Code') {
-            steps {
-                git branch: 'main', url: 'https://github.com/sivaram66/Money-Manager'
-            }
+  stages {
+    stage('Clean Workspace') {
+      steps {
+        script {
+          deleteDir()
         }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    // Build the Docker image
-                    sh 'docker --version'  // Optional: Verify Docker installation
-                    sh 'docker build -t $DOCKER_IMAGE_TAG .'
-                }
-            }
-        }
-
-        stage('Login to Docker Hub') {
-            steps {
-                script {
-                    // Use Jenkins credentials to login to Docker Hub
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-sivaram66', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                    }
-                }
-            }
-        }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    // Push the image to Docker Hub
-                    sh 'docker push $DOCKER_IMAGE_TAG'
-                }
-            }
-        }
+      }
     }
+    stage('Checkout') {
+      steps {
+        git(
+          url: 'https://github.com/sivaram66/Money-Manager',
+          branch: 'main',
+          credentialsId: 'github-credentials'
+        )
+        script {
+          // Set the GIT_COMMIT environment variable to the short hash of the current commit
+          env.GIT_COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+        }
+      }
+    }
+
+    stage('Build Docker Images') {
+      when {
+        expression { params.BUILD_IMAGES }
+      }
+      steps {
+        script {
+          sh "docker compose build"
+        }
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      when {
+        expression { params.PUSH_IMAGES }
+      }
+      steps {
+        script {
+          // Log in to Docker Hub
+          withCredentials([usernamePassword(
+            credentialsId: 'd3cee1a7-3cb5-4dee-b035-f8cfc4a7bcad',
+            usernameVariable: 'DOCKERHUB_USERNAME',
+            passwordVariable: 'DOCKERHUB_PASSWORD'
+          )]) {
+            sh "echo ${DOCKERHUB_PASSWORD} | docker login -u ${DOCKERHUB_USERNAME} --password-stdin"
+
+            // Push frontend images
+            sh "docker push sivaram66/money-manager:latest"
+          }
+        }
+      }
+    }
+    stage('Deploy Docker Containers') {
+      steps {
+        sh "docker compose down --rmi all --volumes"
+        sh "docker compose up -d"
+      }
+    }
+  }
 }

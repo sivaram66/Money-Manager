@@ -1,8 +1,6 @@
 #!/usr/bin/env sh
 set -e
 
-# Wait for DB (optional, you could use proper healthchecks)
-# sleep 10
 
 # Run migrations
 python manage.py migrate --noinput

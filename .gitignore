@@ -19,3 +19,6 @@ media/
 # Ignore editor/IDE-specific files
 .vscode/
 .idea/
+
+old.Jenkinsfile
+example.jenkinsfile

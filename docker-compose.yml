@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   web:
     build: .
@@ -11,6 +9,7 @@ services:
       - "8000:8000"
     volumes:
       - static_volume:/app/assets
+    image: sivaram66/money-manager:latest
 
 volumes:
   static_volume: {}
