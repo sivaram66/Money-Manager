@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'sivaram66/money-manager'
+        DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:latest"  // Optionally add a tag
         DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Name of the credentials ID
     }
 
@@ -17,7 +18,8 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build -t $DOCKER_IMAGE_NAME .'
+                    sh 'docker --version'  // Optional: Verify Docker installation
+                    sh 'docker build -t $DOCKER_IMAGE_TAG .'
                 }
             }
         }
@@ -37,7 +39,7 @@ pipeline {
             steps {
                 script {
                     // Push the image to Docker Hub
-                    sh 'docker push $DOCKER_IMAGE_NAME'
+                    sh 'docker push $DOCKER_IMAGE_TAG'
                 }
             }
         }
