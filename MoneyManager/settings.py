@@ -24,19 +24,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = os.environ.get("SECRET_KEY")
+# DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+# ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+
+SECRET_KEY = 'django-insecure-@o=l-!lbd9pr!f*l0lxdbewmae^tyd=1q2*@n&c$(n%d93!98_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '172.24.0.2']
 
-# SECRET_KEY = 'django-insecure-@o=l-!lbd9pr!f*l0lxdbewmae^tyd=1q2*@n&c$(n%d93!98_'
-
-# # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -99,10 +97,21 @@ WSGI_APPLICATION = 'MoneyManager.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     # This automatically reads the DATABASE_URL from .env
+#     'default': env.db('DATABASE_URL')
+# }
 database_url = os.environ.get("DATABASE_URL")
 DATABASES = {
     'default': dj_database_url.parse(database_url)
 }
+# DATABASES["default"] = dj_database_url.parse(
+#     "postgresql://MoneyManagerdb_owner:npg_Avb5i7YsFkaH@ep-shrill-tooth-a8edkoif-pooler.eastus2.azure.neon.tech/MoneyManagerdb?sslmode=require")
+
+# database_url = os.environ.get("DATABASE_URL")
+# DATABASES = {
+#     'default': dj_database_url.parse(database_url)
+# }
 # database_url =os.environ.get("DATABASE_URL")
 # DATABASES["default"] = dj_database_url.parse("database_url")
 
@@ -143,17 +152,20 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'static')
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+# SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.file'
+SESSION_FILE_PATH = '/app/sessions'
+
 
 # For Sending the OTP
-
 
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
