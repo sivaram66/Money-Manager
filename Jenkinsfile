@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'sivaram66/money-manager'
-        DOCKER_IMAGE_TAG = "${DOCKER_IMAGE_NAME}:latest"  // Optionally add a tag
+        DOCKER_IMAGE_TAG = "$DOCKER_IMAGE_NAME:latest"
         DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Name of the credentials ID
     }
 
