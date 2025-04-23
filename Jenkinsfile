@@ -1,56 +1,43 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    IMAGE      = "sivaram66/money-manager"
-    REGISTRY   = "https://registry.hub.docker.com"
-    CRED_ID    = "docker-hub-creds"       // define in Jenkins
-  }
-
-  stages {
-    stage('Checkout') {
-      steps { checkout scm }
+    environment {
+        DOCKER_IMAGE_NAME = 'sivaram66/money-manager'
+        DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Replace with your Docker Hub credentials in Jenkins
     }
 
-    stage('Build Image') {
-      steps {
-        script {
-          dockerImage = docker.build("${IMAGE}:${env.BUILD_NUMBER}")
-        }
-      }
-    }
-
-    stage('Run Tests') {
-      steps {
-        script {
-          dockerImage.inside {
-            sh 'python manage.py test --failfast'
-          }
-        }
-      }
-    }
-
-    stage('Push to Docker Hub') {
-      when { branch 'main' }
-      steps {
-        withCredentials([usernamePassword(credentialsId: env.CRED_ID,
-                                          usernameVariable: 'DOCKER_USER',
-                                          passwordVariable: 'DOCKER_PASS')]) {
-          script {
-            docker.withRegistry(env.REGISTRY, env.CRED_ID) {
-              dockerImage.push('latest')
-              dockerImage.push("${env.BUILD_NUMBER}")
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/sivaram66/Money-Manager'  // Replace with your GitHub repo
             }
-          }
         }
-      }
-    }
 
-    stage('Deploy with Compose') {
-      steps {
-        sh 'docker-compose down'
-        sh 'docker-compose up -d --build'
-      }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh 'docker build -t $DOCKER_IMAGE_NAME .'
+                }
+            }
+        }
+
+        stage('Login to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub using Jenkins credentials
+                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
+                }
+            }
+        }
+
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Push the image to Docker Hub
+                    sh 'docker push $DOCKER_IMAGE_NAME'
+                }
+            }
+        }
     }
-  }
 }
