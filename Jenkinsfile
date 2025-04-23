@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/sivaram66/Money-Manager'  // Replace with your GitHub repo
+                git branch: 'main', url: 'https://github.com/sivaram66/Money-Manager'  // Replace with your GitHub repo
             }
         }
 
