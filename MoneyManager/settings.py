@@ -105,8 +105,6 @@ database_url = os.environ.get("DATABASE_URL")
 DATABASES = {
     'default': dj_database_url.parse(database_url)
 }
-# DATABASES["default"] = dj_database_url.parse(
-#     "postgresql://MoneyManagerdb_owner:npg_Avb5i7YsFkaH@ep-shrill-tooth-a8edkoif-pooler.eastus2.azure.neon.tech/MoneyManagerdb?sslmode=require")
 
 # database_url = os.environ.get("DATABASE_URL")
 # DATABASES = {
