@@ -52,7 +52,7 @@ pipeline {
                 //     '''
                 // }
                 script {
-                        withCredentials([file(credentialsId: 'budgetbuddy-backend-env', variable: 'SECRET_ENV')]) {
+                        withCredentials([file(credentialsId: 'env-file', variable: 'SECRET_ENV')]) {
                                 sh '''
                                 cp "$SECRET_ENV" .env
                                 '''
