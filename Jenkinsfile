@@ -48,7 +48,7 @@ pipeline {
                     docker rm -f money_manager || true
 
                     echo "Running new container..."
-                    docker run -d --name money_manager -p 8000:8000 ${DOCKER_IMAGE}
+                    docker run -d --name money-manager -p 8000:8000 ${DOCKER_IMAGE}
                     '''
                 }
             }
