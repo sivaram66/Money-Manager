@@ -54,7 +54,7 @@ pipeline {
                 script {
                         withCredentials([file(credentialsId: 'env-file', variable: 'SECRET_ENV')]) {
                                 sh '''
-                                cp "$SECRET_ENV" .env
+                                    cp "$SECRET_ENV" $WORKSPACE/.env
                                 '''
                         }
                 }
