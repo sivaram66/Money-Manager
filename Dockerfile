@@ -27,6 +27,10 @@ RUN mkdir -p /app/sessions
 
 # Expose the port for Gunicorn
 EXPOSE 8000
+# Copy the entrypoint script into the image
+COPY entrypoint.sh ./entrypoint.sh
 
+# Give execute permission inside the image
+RUN chmod +x ./entrypoint.sh
 # Set entrypoint script
 ENTRYPOINT ["./entrypoint.sh"]
