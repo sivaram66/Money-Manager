@@ -1,65 +1,90 @@
 pipeline {
-    agent any
+  agent any
+
+  parameters {
+    booleanParam(
+      name: 'BUILD_IMAGES',
+      defaultValue: true,
+      description: 'Build Docker images?'
+    )
+    booleanParam(
+      name: 'PUSH_IMAGES',
+      defaultValue: true,
+      description: 'Push Docker images to Docker Hub?'
+    )
+  }
 
     environment {
-        DOCKER_HUB_REPO = 'sivaram66/money-manager'
-        DOCKER_IMAGE_TAG = "latest"
-        DOCKER_CREDENTIALS_ID = 'Docker-credntials'
-        GIT_REPO = 'https://github.com/sivaram66/Money-Manager.git'
-        GITHUB_CREDENTIALS_ID = 'github-credentials'
+        DOCKER_IMAGE_NAME = 'sivaram66/money-manager'
+        DOCKER_IMAGE_TAG = "$DOCKER_IMAGE_NAME:latest"
+        DOCKER_HUB_CREDENTIALS = 'dockerhub-sivaram66'  // Name of the credentials ID
     }
 
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main',
-                    credentialsId: "${GITHUB_CREDENTIALS_ID}",
-                    url: "${GIT_REPO}"
-            }
+  stages {
+    stage('Clean Workspace') {
+      steps {
+        script {
+          deleteDir()
         }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    sh "docker build -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ."
-                }
-            }
+      }
+    }
+    stage('Checkout') {
+      steps {
+        git(
+          url: 'https://github.com/sivaram66/Money-Manager',
+          branch: 'main',
+          credentialsId: 'github-credentials'
+        )
+        script {
+          // Set the GIT_COMMIT environment variable to the short hash of the current commit
+          env.GIT_COMMIT = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
         }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh """
-                        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                        docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
-                        """
-                    }
-                }
-            }
-        }
-
-        stage('Deploy Docker Container') {
-            steps {
-                script {
-                    sh '''
-                    echo "Stopping and removing old container (if exists)..."
-                    docker rm -f money_manager || true
-
-                    echo "Running new container..."
-                    docker run -d --name money_manager -p 8000:8000 sivaram66/money-manager:latest
-                    '''
-                }
-            }
-        }
+      }
     }
 
-    post {
-        success {
-            echo 'Pipeline executed successfully!'
+    stage('Build Docker Images') {
+      when {
+        expression { params.BUILD_IMAGES }
+      }
+      steps {
+        script {
+          sh "docker compose build --no-cache"
         }
-        failure {
-            echo 'Pipeline failed. Please check the logs.'
-        }
+      }
     }
+
+    stage('Push to Docker Hub') {
+      when {
+        expression { params.PUSH_IMAGES }
+      }
+      steps {
+        script {
+          // Log in to Docker Hub
+          withCredentials([usernamePassword(
+            credentialsId: 'Docker-credentials',
+            usernameVariable: 'DOCKERHUB_USERNAME',
+            passwordVariable: 'DOCKERHUB_PASSWORD'
+          )]) {
+            sh "echo ${DOCKERHUB_PASSWORD} | docker login -u ${DOCKERHUB_USERNAME} --password-stdin"
+
+            // Push frontend images
+            sh "docker push sivaram66/money-manager:latest"
+          }
+        }
+      }
+    }
+    stage('Deploy Docker Containers') {
+      steps {
+        script {
+          withCredentials([file(credentialsId: 'env-file', variable: 'SECRET_ENV')]) {
+            sh '''
+                cp "$SECRET_ENV" .env
+              '''
+          }
+        }
+        sh "docker compose down --rmi all --volumes"
+        sh "docker compose up -d --force-recreate"
+      }
+    }
+  }
 }
