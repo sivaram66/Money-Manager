@@ -11,6 +11,13 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                script {
+                    deleteDir()
+                }
+            }
+        }
         stage('Clone Repository') {
             steps {
                 git branch: 'main',
