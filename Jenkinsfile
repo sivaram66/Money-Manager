@@ -42,15 +42,18 @@ pipeline {
 
         stage('Deploy Docker Container') {
             steps {
-                script {
-                    sh '''
-                    echo "Stopping and removing old container (if exists)..."
-                    docker rm -f money-manager || true
+                // script {
+                //     sh '''
+                //     echo "Stopping and removing old container (if exists)..."
+                //     docker rm -f money-manager || true
 
-                    echo "Running new container..."
-                    docker run -d --name money-manager -p 8000:8000 ${DOCKER_IMAGE}
-                    '''
-                }
+                //     echo "Running new container..."
+                //     docker run -d --name money-manager -p 8000:8000 ${DOCKER_IMAGE}
+                //     '''
+                // }
+                sh "docker compose down --rmi all --volumes"
+                sh "docker compose up -d"
+
             }
         }
 
