@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         DOCKER_HUB_REPO = 'sivaram66/money-manager'
-        DOCKER_IMAGE_TAG = "latest"
+        DOCKER_IMAGE_TAG = 'latest'
+        DOCKER_IMAGE = "${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}"
         DOCKER_CREDENTIALS_ID = 'Docker-credentials'
         GIT_REPO = 'https://github.com/sivaram66/Money-Manager.git'
         GITHUB_CREDENTIALS_ID = 'github-credentials'
@@ -21,7 +22,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG} ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
@@ -30,10 +31,10 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh """
+                        sh '''
                         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-                        docker push ${DOCKER_HUB_REPO}:${DOCKER_IMAGE_TAG}
-                        """
+                        docker push ${DOCKER_IMAGE}
+                        '''
                     }
                 }
             }
@@ -47,8 +48,16 @@ pipeline {
                     docker rm -f money_manager || true
 
                     echo "Running new container..."
-                    docker run -d --name money_manager -p 8000:8000 sivaram66/money-manager:latest
+                    docker run -d --name money_manager -p 8000:8000 ${DOCKER_IMAGE}
                     '''
+                }
+            }
+        }
+
+        stage('Cleanup (Optional)') {
+            steps {
+                script {
+                    sh 'docker system prune -f'
                 }
             }
         }
@@ -56,10 +65,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully!'
+            echo '✅ Pipeline executed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Please check the logs.'
+            echo '❌ Pipeline failed. Please check the logs.'
         }
     }
 }
