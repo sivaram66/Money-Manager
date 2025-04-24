@@ -51,6 +51,14 @@ pipeline {
                 //     docker run -d --name money-manager -p 8000:8000 ${DOCKER_IMAGE}
                 //     '''
                 // }
+                script {
+                        withCredentials([file(credentialsId: 'budgetbuddy-backend-env', variable: 'SECRET_ENV')]) {
+                                sh '''
+                                cp "$SECRET_ENV" .env
+                                '''
+                        }
+                }
+
                 sh "docker compose down --rmi all --volumes"
                 sh "docker compose up -d"
 
