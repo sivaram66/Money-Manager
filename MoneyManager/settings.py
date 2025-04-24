@@ -161,6 +161,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.file'
 SESSION_FILE_PATH = '/app/sessions'
+DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
 
 
 # For Sending the OTP

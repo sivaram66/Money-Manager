@@ -1,33 +1,32 @@
-# 1. Use an official Python runtime as a parent image
-FROM python:3.11-slim
+# Use an official Python runtime as a parent image
+FROM python:3.11-slim as base
 
-# 2. Set environment variables to prevent Python from writing .pyc files and to buffer output
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+# Set environment variables to prevent Python from writing .pyc files and to buffer output
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
 
-# 3. Create workdir
+# Create working directory
 WORKDIR /app
 
-# 4. Install system deps for PostgreSQL and building packages in a single RUN command
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        build-essential \
+# Install minimal system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
         libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 5. Install Python dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip \
-    && pip install -r requirements.txt
+    && pip install -r requirements.txt \
+    && rm -rf ~/.cache/pip
 
-# 6. Copy the rest of the code (this must come after the dependency installation)
+# Copy project files
 COPY . .
 
-# 7. Create a session directory
+# Create session directory
 RUN mkdir -p /app/sessions
 
-# 8. Expose the port Gunicorn will run on
+# Expose the port for Gunicorn
 EXPOSE 8000
 
-# 9. Run migrations, collectstatic & launch Gunicorn
+# Set entrypoint script
 ENTRYPOINT ["./entrypoint.sh"]
