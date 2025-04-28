@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    command: ./entrypoint.sh
+    #command: ./entrypoint.sh
     restart: unless-stopped
     env_file:
       - .env
