@@ -20,5 +20,4 @@ media/
 .vscode/
 .idea/
 
-old.Jenkinsfile
-example.jenkinsfile
+entrypoint.sh
