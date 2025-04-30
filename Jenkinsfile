@@ -25,7 +25,6 @@ pipeline {
                     url: "${GIT_REPO}"
             }
         }
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -49,15 +48,6 @@ pipeline {
 
         stage('Deploy Docker Container') {
             steps {
-                // script {
-                //     sh '''
-                //     echo "Stopping and removing old container (if exists)..."
-                //     docker rm -f money-manager || true
-
-                //     echo "Running new container..."
-                //     docker run -d --name money-manager -p 8000:8000 ${DOCKER_IMAGE}
-                //     '''
-                // }
                 script {
                         withCredentials([file(credentialsId: 'env-file', variable: 'SECRET_ENV')]) {
                                 sh 'ls -l'
@@ -84,10 +74,12 @@ pipeline {
 
     post {
         success {
-            echo '✅ Pipeline executed successfully!'
+            echo 'Pipeline executed successfully!'
         }
         failure {
-            echo '❌ Pipeline failed. Please check the logs.'
+            echo 'Pipeline failed.'
         }
     }
 }
+
+
